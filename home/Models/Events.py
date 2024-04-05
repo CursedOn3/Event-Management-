@@ -9,7 +9,5 @@ class Event(models.Model):
     ticket_price = models.FloatField()
     event_date = models.DateField()
     booked = models.BooleanField()
-    created_at = models.DateTimeField
-    updated_at = models.DateTimeField
 
 

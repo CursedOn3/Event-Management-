@@ -141,6 +141,33 @@ def logout_user(request):
     return redirect('/')
 
 
+def add_event(request):
+    if request.method == "GET":
+        return render(request, 'events_add.html')
+
+    if request.method == "POST":
+        name = request.POST.get('name')
+        venue = request.POST.get('venue')
+        ticket_price = request.POST.get('ticket_price')
+        event_date = request.POST.get('event_date')
+        booked = request.POST.get('booked', False)  # Default value is False if not provided
+
+        # Create Event object and save it to the database
+        event = Event.objects.create(
+            name=name,
+            venue=venue,
+            ticket_price=ticket_price,
+            event_date=event_date,
+            booked=booked
+        )
+
+        if event.id > 0:
+            messages.success(request, "event was added succesfully")
+        else:
+            messages.error(request, "event was not added. try again")
+        return redirect('list_events')
+
+
 def list_event(request):
     if request.method == "GET":
         events = Event.objects.all()
@@ -151,7 +178,6 @@ def list_event(request):
 
 
 def list_my_events(request):
-    print(get_geocode())
     if get_current_user(request).is_authenticated:
         # Filter EventCustomerRef instances by customer_id (current user)
         user_event_refs = EventCustomerRef.objects.filter(customer_id=get_current_user(request))
@@ -161,9 +187,15 @@ def list_my_events(request):
 
         # Retrieve events associated with the filtered event IDs
         user_events = Event.objects.filter(pk__in=event_ids)
-        return render(request, 'events.html', {"events":user_events})
+        return render(request, 'my-events.html', {"events":user_events})
     else:
         return redirect('login')
+
+
+def view_my_event(request, e_id):
+    event = Event.objects.get(id=e_id)
+    return render(request, 'event_detail.html', {"event": event})
+
 
 def book_events(request):
     if request.method == "GET":

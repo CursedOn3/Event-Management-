@@ -25,8 +25,8 @@
                             <td class="text-center text-">{{ event.ticket_price }}</td>
                             <td class="text-center text-">{{ event.event_date }}</td>
                             <td class="text-center">
-                                <a href="{% url 'book_events' %}?e_id={{ event.id }}" class="btn btn-primary">
-                                    <i class="fa fa-book"></i>
+                                <a href="{% url 'view_my_event' event.id %}?e_id={{ event.id }}" class="btn btn-primary">
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                         </tr>

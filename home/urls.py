@@ -20,7 +20,9 @@ urlpatterns = [
     path("seed", views.seed_data, name='seed'),
 
     path("events", views.list_event, name='list_events'),
+    path("events/add", views.add_event, name='add_event'),
     path("events/my", views.list_my_events, name='list_my_events'),
+    path("events/my/events/<int:e_id>", views.view_my_event, name='view_my_event'),
     path("events/book", views.book_events, name='book_events'),
 
     path("logout", views.logout_user, name='logout'),
