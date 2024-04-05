@@ -24,6 +24,10 @@ urlpatterns = [
     path("events/my", views.list_my_events, name='list_my_events'),
     path("events/my/events/<int:e_id>", views.view_my_event, name='view_my_event'),
     path("events/book", views.book_events, name='book_events'),
+    path("events/detail/<int:e_id>", views.view_event_detail, name='events_detail'),
+    path("events/my/ticket/<int:e_id>", views.view_event_ticket, name='ticket'),
+    path("events/my/cart/<int:e_id>", views.event_ticket_cart, name='cart'),
+    path("events/my/checkout/<int:e_id>", views.purchase_event_ticket, name='checkout'),
 
     path("logout", views.logout_user, name='logout'),
     ] 

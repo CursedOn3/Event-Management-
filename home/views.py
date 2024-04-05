@@ -196,6 +196,22 @@ def view_my_event(request, e_id):
     event = Event.objects.get(id=e_id)
     return render(request, 'event_detail.html', {"event": event})
 
+def view_event_detail(request, e_id):
+    event = Event.objects.get(id=e_id)
+    return render(request, 'event_detail_master.html', {"event": event})
+
+def view_event_ticket(request, e_id):
+    event = Event.objects.get(id=e_id)
+    return render(request, 'ticket.html', {"event": event})
+
+def event_ticket_cart(request, e_id):
+    event = Event.objects.get(id=e_id)
+    return render(request, 'cart.html', {"event": event})
+
+def purchase_event_ticket(request, e_id):
+    event = Event.objects.get(id=e_id)
+    return render(request, 'checkout.html', {"event": event})
+
 
 def book_events(request):
     if request.method == "GET":
