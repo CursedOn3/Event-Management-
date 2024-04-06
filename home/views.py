@@ -155,7 +155,7 @@ def add_event(request):
         description = request.POST["event_description"]
         event_time_start = request.POST["event_time_start"]
         event_time_end = request.POST["event_time_end"]
-
+        organizer = request.POST.get('organizer')
         # Create Event object and save it to the database
         event = Event.objects.create(
             name=name,
@@ -166,7 +166,8 @@ def add_event(request):
             event_date=event_date,
             event_time_start=event_time_start,
             event_time_end=event_time_end,
-            booked=booked
+            booked=booked,
+            organizer=organizer
         )
 
         if event.id > 0:
@@ -261,7 +262,7 @@ def edit_events(request, id):
             event.event_date = request.POST["event_date"]
             event.event_time_start = request.POST["event_time_start"]
             event.event_time_end = request.POST["event_time_end"]
-
+            event.organizer = request.POST["organizer"]
             event.save()
 
             messages.success(request, f'event {event.name} updated successfullly')

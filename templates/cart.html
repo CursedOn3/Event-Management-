@@ -102,15 +102,26 @@
     <script>
     new DataTable('#events-list');
 
-        $(document).ready(function() {
-        $("#ticket_qty").on("change", function() {
-            var qty = parseInt($(this).val());
+        $(document).ready(function() { 
+            var qty = parseInt($("#ticket_qty").val());
             var ticketPrice = parseFloat("{{ event.ticket_price }}");
-            var tax = parseFloat("18.20");
+            var tax = parseFloat(ticketPrice * 0.08 * qty);
             var subtotal = parseFloat((qty * ticketPrice).toFixed(2));
             var total = (subtotal + tax);
             $("#subtotal").html(subtotal);
             $("#total").html(total);
+            $("#tax").html(tax);
+        
+
+        $("#ticket_qty").on("change", function() {
+            var qty = parseInt($(this).val());
+            var ticketPrice = parseFloat("{{ event.ticket_price }}");
+            var tax = parseFloat(ticketPrice * 0.08 * qty);
+            var subtotal = parseFloat((qty * ticketPrice).toFixed(2));
+            var total = (subtotal + tax);
+            $("#subtotal").html(subtotal);
+            $("#total").html(total);
+            $("#tax").html(tax);
         });
     });
     </script>

@@ -26,6 +26,10 @@
                                 <input type="text" value="{{ event.venue }}" class="form-control" name="venue" id="venue" placeholder="Enter venue">
                             </div>
                             <div class="form-group">
+                                <label for="organizer">Organizer</label>
+                                <input type="text" value="{{ event.organizer }}" class="form-control" name="organizer" id="organizer" placeholder="Enter venue">
+                            </div>
+                            <div class="form-group">
                                 <label for="ticket_price">Ticket Price</label>
                                 <input type="number" value="{{ event.ticket_price}}" step="0.01" name="ticket_price" class="form-control" id="ticket_price" placeholder="Enter ticket price">
                             </div>
@@ -40,12 +44,12 @@
 
                             <div class="form-group">
                                 <label for="event_date">Event Starts From</label>
-                                <input type="time" value="{{ event.event_time_start }}" name="event_time_start" class="form-control" id="event_time_start">
+                                <input type="time" value="{{ event.event_time_start|time:'H:i' }}" name="event_time_start" class="form-control" id="event_time_start">
                             </div>
 
                             <div class="form-group">
                                 <label for="event_date">Event Ends At</label>
-                                <input type="time" value="{{ event.event_time_end }}" name="event_time_end" class="form-control" id="event_time_end">
+                                <input type="time" value="{{ event.event_time_end|time:'H:i' }}" name="event_time_end" class="form-control" id="event_time_end">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <a href="{% url 'list_events' %}" class="btn btn-primary">Cancel</a>

@@ -60,16 +60,7 @@
     <div id="menu-bars" class="fas fa-bars"></div>
 </header>
 {% block body %}
-    <div class="card">
-    {{ messages }}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+    
 {% endblock body %}
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

@@ -15,5 +15,6 @@ class Event(models.Model):
     event_time_end = models.TimeField(default=datetime.now().strftime("%H:%M:%S"))
     description = models.TextField(default="NA")
     booked = models.BooleanField()
+    organizer=models.CharField(max_length=50, default="Tarpiya")
 
 
