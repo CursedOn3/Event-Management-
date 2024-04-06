@@ -45,7 +45,7 @@
                                 <tr>
                                     <td>Quantity :</td>
                                     <td class="text-end">
-                                        <select class="form-select form-select-sm w-xl">
+                                        <select id="ticket_qty" class="form-select form-select-sm w-xl">
                                         <option value="1" selected="">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -59,17 +59,17 @@
                                 </tr>
                                 <tr>
                                     <td>Sub Total :</td>
-                                    <td class="text-end">$ 780</td>
+                                    <td class="text-end" id="subtotal">{{event.ticket_price}}</td>
                                 </tr>
                                 <tr>
                                     <td>Estimated Tax : </td>
-                                    <td class="text-end">$ 18.20</td>
+                                    <td class="text-end" id="tax">$ 18.20</td>
                                 </tr>
                                 <tr class="bg-light">
                                     <th>Total :</th>
                                     <td class="text-end">
-                                            <span class="fw-bold">
-                                                $ 745.2
+                                            <span class="fw-bold" id="total">
+                                                {{ event.ticket_price|add:"+18.20" }}
                                             </span>
                                     </td>
                                 </tr>
@@ -101,5 +101,17 @@
 {% block custom_js %}
     <script>
     new DataTable('#events-list');
+
+        $(document).ready(function() {
+        $("#ticket_qty").on("change", function() {
+            var qty = parseInt($(this).val());
+            var ticketPrice = parseFloat("{{ event.ticket_price }}");
+            var tax = parseFloat("18.20");
+            var subtotal = parseFloat((qty * ticketPrice).toFixed(2));
+            var total = (subtotal + tax);
+            $("#subtotal").html(subtotal);
+            $("#total").html(total);
+        });
+    });
     </script>
 {% endblock %}

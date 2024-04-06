@@ -5,39 +5,42 @@
 {% block body %}
     <section style="margin-top: 100px">
         <div class="card">
-        <div class="card-header">
-            <h3>Event Detail</h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-8 offset-md-1">
-                    <h1 class="mt-5">{{ event.name }}</h1>
-                    <p>Date: <strong>{{ event.event_date }}</strong></p>
-                    <p>Location: <strong>{{ event.venue }}</strong></p>
-                    <p>Description:</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget quam ut leo facilisis accumsan. Nullam elementum nulla eu dolor hendrerit, eget consectetur ligula tincidunt. Phasellus viverra, est nec tincidunt tempor, nulla sem volutpat elit, a pharetra purus ipsum nec dui.</p>
-                    <p>Organizer: <strong>Event Organizer</strong></p>
-                    <p>Ticket Price: <strong>${{ event.ticket_price }}</strong></p>
-                    <p>
-                        {% if event.booked %}
-                        <a href="{% url 'ticket' event.id %}?e_id={{ event.id }}" class="btn btn-primary">View ticket</a>
-                        {% else %}
-                        <a href="{% url 'cart' event.id %}?e_id={{ event.id }}" class="btn btn-info">Purchase</a>
-                        {% endif %}
-
-                        <a href="{% url 'list_events' %}" class="btn text-info"><i class="fa fa-arrow-left"></i> Go Back</a>
-                    </p>
-
-                </div>
+            <div class="card-header">
+                <h3>Event Detail</h3>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 offset-md-1">
+                        <h1 class="mt-5">{{ event.name }}</h1>
+                        <p>Date: <strong>{{ event.event_date }}</strong></p>
+                        <p>Location: <strong>{{ event.venue }}</strong></p>
+                        <p>Organizer: <strong>{{ user.username}}</strong></p>
+                        <p>Ticket Price: <strong>Rs. {{ event.ticket_price }}</strong></p>
+                        <p>Description: {{ event.description }}</p>
+                        <p>
+                            {% if event.booked %}
+                                <a href="{% url 'ticket' event.id %}?e_id={{ event.id }}" class="btn btn-primary">View ticket</a>
+                            {% else %}
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'cart' event.id %}?e_id={{ event.id }}" class="btn btn-info">Purchase</a>
+                                {% else %}
+                                    <a href="{% url 'login' %}" class="btn btn-primary">login to continue </a>
+                                {% endif %}
+                            {% endif %}
 
+                            <a href="{% url 'list_events' %}" class="btn text-info"><i class="fa fa-arrow-left"></i> Go Back</a>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
     </section>
 {% endblock body %}
 
 {% block custom_js %}
     <script>
-    new DataTable('#events-list');
+        new DataTable('#events-list');
     </script>
 {% endblock %}

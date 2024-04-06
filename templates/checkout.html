@@ -1,77 +1,89 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Gallery{% endblock title %}
 
 {% block body %}
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />-->
-<!--<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>-->
-<script src="/static/js/qrcode.min.js"></script>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />-->
+    <!--<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>-->
 
-<style type="text/css">
-    #qrcode {
-        width:90px;
-        height:90px;
-        paddinng:15px;
-    }
-</style>
-<section style="margin-top: 100px">
-    <div >
-        <h1 class="h3 mb-5">Payment</h1>
-        <div class="row">
-            <!-- Left -->
-            <div class="col-lg-9">
-                <div class="card border shadow-none">
-                <div class="card-body" id="accordionPayment">
-                    <!-- Credit card -->
-                    <div class="accordion-item mb-3">
-                        <h2 class="h5 px-4 py-3 accordion-header d-flex justify-content-between align-items-center">
-                            <div class="form-check w-100 collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCC" aria-expanded="false">
-                                <input class="form-check-input" type="radio" name="payment" id="payment1">
-                                <label class="form-check-label pt-1" for="payment1">
-                                    &nbsp; &nbsp;Pay With Credit Card
-                                </label>
-                            </div>
-                        </h2>
-                        <div id="collapseCC" class="accordion-collapse collapse show" data-bs-parent="#accordionPayment" style="">
-                            <div class="accordion-body">
-                                <div class="mb-3">
-                                    <label class="form-label">Card Number </label>
-                                    <input type="text" class="form-control" placeholder="" id="CardNumber">
-                                    <span id="cardtype"></span>
+    <script src="{% static 'js/qrcode.min.js' %}"></script>
+    <script src="{% static 'js/cc-validator.js' %}"></script>
+
+    <style type="text/css">
+        #qrcode {
+            width:90px;
+            height:90px;
+            paddinng:15px;
+        }
+
+        .cc-valid {
+            border: green !important;
+            color: green !important;
+        }
+
+        .cc-invalid {
+            border: darkred !important;
+            color: darkred !important;
+        }
+    </style>
+    <section style="margin-top: 100px">
+        <div >
+            <h1 class="h3 mb-5">Payment</h1>
+            <div class="row">
+                <!-- Left -->
+                <div class="col-lg-9">
+                    <div class="card border shadow-none">
+                        <div class="card-body" id="accordionPayment">
+                            <!-- Credit card -->
+                            <div class="accordion-item mb-3">
+                                <h2 class="h5 px-4 py-3 accordion-header d-flex justify-content-between align-items-center">
+                                    <div class="form-check w-100 collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCC" aria-expanded="false">
+                                        <input class="form-check-input" type="radio" name="payment" checked id="payment1">
+                                        <label class="form-check-label pt-1" for="payment1">
+                                            &nbsp; &nbsp;Pay With Credit Card
+                                        </label>
+                                    </div>
+                                </h2>
+                                <div id="collapseCC" class="accordion-collapse collapse show" data-bs-parent="#accordionPayment" style="">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Card Number </label>
+                                            <input type="text" class="form-control" placeholder="" id="cc_number">
+                                            <span id="cardtype"></span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Name on card</label>
+                                                    <input type="text" id="card-name" required class="form-control" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Expiry date</label>
+                                                    <input type="text" id="card-date" required class="form-control" placeholder="MM/YY">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label class="form-label">CVV Code</label>
+                                                    <input required id="cvv" type="password" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Name on card</label>
-                                            <input type="text" class="form-control" placeholder="">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="mb-3">
-                                            <label class="form-label">Expiry date</label>
-                                            <input type="text" class="form-control" placeholder="MM/YY">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="mb-3">
-                                            <label class="form-label">CVV Code</label>
-                                            <input type="password" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- PayPal -->
-                    <div class="accordion-item mb-3 border">
-                        <h2 class="h5 px-4 py-3 accordion-header d-flex justify-content-between align-items-center">
-                            <div class="form-check w-100 collapsed" data-bs-toggle="collapse" data-bs-target="#collapsePP" aria-expanded="false">
-                                <input class="form-check-input" type="radio" name="payment" id="payment2">
-                                <label class="form-check-label pt-1" for="payment2">
-                                    &nbsp;&nbsp; Phone pay (Scan the QR code)
-                                </label>
-                            </div>
-                            <span>
+                            <!-- PayPal -->
+                            <div class="accordion-item mb-3 border">
+                                <h2 class="h5 px-4 py-3 accordion-header d-flex justify-content-between align-items-center">
+                                    <div class="form-check w-100 collapsed" data-bs-toggle="collapse" data-bs-target="#collapsePP" aria-expanded="false">
+                                        <input class="form-check-input" type="radio" name="payment" id="payment2">
+                                        <label class="form-check-label pt-1" for="payment2">
+                                            &nbsp;&nbsp; Phone pay (Scan the QR code)
+                                        </label>
+                                    </div>
+                                    <span>
 <!--                                <svg id="barcode"></svg>-->
                                 <div id="qrcode"></div>
                                 <script type="text/javascript">
@@ -86,233 +98,83 @@
                                 qrcode.makeCode("https://www.esewa.com.np?merchantId=45454356456&event_id={{ event.id }}&customer_id=33")
                                 </script>
                           </span>
-                        </h2>
-                        <div id="collapsePP" class="accordion-collapse collapse" data-bs-parent="#accordionPayment" style="">
-                            <div class="accordion-body">
-                                <div class="px-2 col-lg-6 mb-3">
-                                    <label class="form-label">Email address</label>
-                                    <input type="email" class="form-control">
+                                </h2>
+                                <div id="collapsePP" class="accordion-collapse collapse" data-bs-parent="#accordionPayment" style="">
+                                    <div class="accordion-body">
+                                        <div class="px-2 col-lg-6 mb-3">
+                                            <label class="form-label">Email address</label>
+                                            <input type="email" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
-            <!-- Right -->
-            <div class="col-lg-3">
-                <div class="card position-sticky top-0">
-                    <div class="p-3 bg-light bg-opacity-10">
-                        <h6 class="card-title mb-3">Order Summary</h6>
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span>Subtotal</span> <span>$214.50</span>
+                <!-- Right -->
+                <div class="col-lg-3">
+                    <div class="card position-sticky top-0">
+                        <div class="p-3 bg-light bg-opacity-10">
+                            <h3 class="card-title mb-3">Order Summary</h3>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Subtotal</span> <span>Rs. {{event.ticket_price}}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1 ">
+                                <span>Tax</span> <span class="text-danger" id="tax">--</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-4 ">
+                                <span>TOTAL</span> <strong class="text-dark" id="total-price"></strong>
+                            </div>
+                            <a  href="{% url 'book_events' %}?e_id={{ event.id }}" id="place-order" disabled class="btn btn-primary w-100 mt-2">Place order</a>
                         </div>
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span>Tax</span> <span class="text-danger">-$10.00</span>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between mb-4 small">
-                            <span>TOTAL</span> <strong class="text-dark">$224.50</strong>
-                        </div>
-                        <a onclick="testCreditCard(event);" href="#" class="btn btn-primary w-100 mt-2">Place order</a>
-<!--                        href="{% url 'ticket' event.id %}?e_id={{ event.id }}"-->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock body %}
 
 {% block custom_js %}
     <script>
-    new DataTable('#events-list');
+        new DataTable('#events-list');
+
+        $(document).ready(function(){
+            var tp = {{ event.ticket_price }};
+            var tax = tp*0.08;
+            $("#tax").html('Rs. '+tax);
+            $("#total-price").html('Rs. '+(tp + tax));
 
 
-    var ccErrorNo = 0;
-    var ccErrors = new Array ()
+        });
 
-    ccErrors [0] = "Unknown card type";
-    ccErrors [1] = "No card number provided";
-    ccErrors [2] = "Credit card number is in invalid format";
-    ccErrors [3] = "Credit card number is invalid";
-    ccErrors [4] = "Credit card number has an inappropriate number of digits";
-    ccErrors [5] = "Warning! This credit card number is associated with a scam attempt";
+        $("#cc_number").on('keyup', function (){
+            $('#cc_number').validateCreditCard(function(result) {
+                if (result.valid) {
+                    $(this).addClass('cc-valid');
+                    $(this).removeClass('cc-invalid');
+                } else {
+                    $(this).addClass('cc-invalid');
+                    $(this).removeClass('cc-valid');
+                }
+            });
+        });
 
-    function checkCreditCard (cardnumber) {
+        $("#place-order").on("click", function (e){
+            if ($("#payment1:checked").length > 0) {
+                var validinfo = $("#cc_number").hasClass("cc-valid")
+                    && $("#card-name").val().trim() !== ""
+                    && $("#card-date").val().trim() !== ""
+                    && $("#cvv").val().trim() !== "";
 
-        // Array to hold the permitted card characteristics
-        var cards = new Array();
-
-        // Define the cards we support. You may add addtional card types as follows.
-
-        //  Name:         As in the selection box of the form - must be same as user's
-        //  Length:       List of possible valid lengths of the card number for the card
-        //  prefixes:     List of possible prefixes for the card
-        //  checkdigit:   Boolean to say whether there is a check digit
-
-        cards [0] = {name: "Visa",
-            length: "13,16",
-            prefixes: "4,4",
-            checkdigit: true};
-        cards [1] = {name: "MasterCard",
-            length: "16",
-            prefixes: "51,52,53,54,55",
-            checkdigit: true};
-        cards [2] = {name: "AmEx",
-            length: "15",
-            prefixes: "34,37",
-            checkdigit: true};
-        cards [3] = {name: "Discover",
-            length: "16",
-            prefixes: "6011,622,64,65",
-            checkdigit: true};
-
-
-        // If card type not found, report an error
-        if (cardnumber.trim()=='') {
-            ccErrorNo = 1;
-            return false;
-        }
-
-        // Establish card type
-        var cardType = -1;
-        loop1: for (var i=0; i<cards.length; i++) {
-
-            console.log("split prefixes=",cards[i].prefixes)
-            var prefixes = cards[i].prefixes.split(",");
-            console.log("split prefixes=",prefixes)
-            for (var j=0; i<prefixes.length; j++) {
-                if(cardnumber.startsWith(prefixes[j])) {
-                    //document.getElementById("cardtype").innerHTML = cards[i].name;
-                    cardType = i;
-                    console.log("cardtype=",cards[i]);
-                    break loop1;
-                }else{
-                    //document.getElementById("cardtype").innerHTML = "";
+                if (!validinfo) {
+                    e.preventDefault();
+                    alert("Invalid Credit card information")
                 }
             }
-
-        }
-
-
-        // If card type not found, report an error
-        if (cardType == -1) {
-            ccErrorNo = 0;
-            return false;
-        }
-
-        // Ensure that the user has provided a credit card number
-        if (cardnumber.length == 0)  {
-            ccErrorNo = 1;
-            return false;
-        }
-
-        // Now remove any spaces from the credit card number
-        cardnumber = cardnumber.replace (/\s/g, "");
-
-        // Check that the number is numeric
-        var cardNo = cardnumber
-        var cardexp = /^[0-9]{13,19}$/;
-        if (!cardexp.exec(cardNo))  {
-            ccErrorNo = 2;
-            return false;
-        }
-
-        // Now check the modulus 10 check digit - if required
-        if (cards[cardType].checkdigit) {
-            var checksum = 0;                                  // running checksum total
-            var mychar = "";                                   // next char to process
-            var j = 1;                                         // takes value of 1 or 2
-
-            // Process each digit one by one starting at the right
-            var calc;
-            for (i = cardNo.length - 1; i >= 0; i--) {
-
-                // Extract the next digit and multiply by 1 or 2 on alternative digits.
-                calc = Number(cardNo.charAt(i)) * j;
-
-                // If the result is in two digits add 1 to the checksum total
-                if (calc > 9) {
-                    checksum = checksum + 1;
-                    calc = calc - 10;
-                }
-
-                // Add the units element to the checksum total
-                checksum = checksum + calc;
-
-                // Switch the value of j
-                if (j ==1) {j = 2} else {j = 1};
-            }
-
-            // All done - if checksum is divisible by 10, it is a valid modulus 10.
-            // If not, report an error.
-            if (checksum % 10 != 0)  {
-                ccErrorNo = 3;
-                return false;
-            }
-        }
-
-        // Check it's not a spam number
-        if (cardNo == '5490997771092064') {
-            ccErrorNo = 5;
-            return false;
-        }
-
-        // The following are the card-specific checks we undertake.
-        var LengthValid = false;
-        var PrefixValid = false;
-        var undefined;
-
-        // We use these for holding the valid lengths and prefixes of a card type
-        var prefix = new Array ();
-        var lengths = new Array ();
-
-        // Load an array with the valid prefixes for this card
-        prefix = cards[cardType].prefixes.split(",");
-
-        // Now see if any of them match what we have in the card number
-        for (i=0; i<prefix.length; i++) {
-            var exp = new RegExp ("^" + prefix[i]);
-            if (exp.test (cardNo)) PrefixValid = true;
-        }
-
-        // If it isn't a valid prefix there's no point at looking at the length
-        if (!PrefixValid) {
-            ccErrorNo = 3;
-            return false;
-        }
-
-        // See if the length is valid for this card
-        lengths = cards[cardType].length.split(",");
-        for (j=0; j<lengths.length; j++) {
-            if (cardNo.length == lengths[j]) LengthValid = true;
-        }
-
-        // See if all is OK by seeing if the length was valid. We only check the length if all else was
-        // hunky dory.
-        if (!LengthValid) {
-            ccErrorNo = 4;
-            return false;
-        };
-
-        // The credit card is in the required format.
-        return true;
-    }
+        });
 
 
-    function testCreditCard(event1) {
-        myCardNo = document.getElementById('CardNumber').value;
-        console.log("called");
 
-        if (checkCreditCard(myCardNo)) {
-            console.log("Valid credit card number provided");
-            return true;
-        } else {
-            event1.preventDefault();
-            alert(ccErrors[ccErrorNo]);
-            return false;
-        }
-    }
     </script>
 {% endblock %}

@@ -147,17 +147,25 @@ def add_event(request):
 
     if request.method == "POST":
         name = request.POST.get('name')
+        artist = request.POST.get('artist')
         venue = request.POST.get('venue')
         ticket_price = request.POST.get('ticket_price')
         event_date = request.POST.get('event_date')
-        booked = request.POST.get('booked', False)  # Default value is False if not provided
+        booked = request.POST.get('booked', False)
+        description = request.POST["event_description"]
+        event_time_start = request.POST["event_time_start"]
+        event_time_end = request.POST["event_time_end"]
 
         # Create Event object and save it to the database
         event = Event.objects.create(
             name=name,
+            artist=artist,
             venue=venue,
             ticket_price=ticket_price,
+            description = description,
             event_date=event_date,
+            event_time_start=event_time_start,
+            event_time_end=event_time_end,
             booked=booked
         )
 
@@ -187,6 +195,7 @@ def list_my_events(request):
 
         # Retrieve events associated with the filtered event IDs
         user_events = Event.objects.filter(pk__in=event_ids)
+        messages.info(request, "this is the test message from view.py line 198")
         return render(request, 'my-events.html', {"events":user_events})
     else:
         return redirect('login')
@@ -198,6 +207,11 @@ def view_my_event(request, e_id):
 
 def view_event_detail(request, e_id):
     event = Event.objects.get(id=e_id)
+    ref = EventCustomerRef.objects.filter(customer_id=request.user.id, event_id=e_id).exists()
+    if ref:
+        event.booked = True
+    else:
+        event.booked = False
     return render(request, 'event_detail_master.html', {"event": event})
 
 def view_event_ticket(request, e_id):
@@ -227,10 +241,53 @@ def book_events(request):
             # You can perform additional operations here if needed
             if ref.id > 0:
                 messages.success(request, "event booked !!!")
-                return redirect('list_events')
+                return redirect('ticket', event_id)
         else:
             return redirect('login')
 
+
+def edit_events(request, id):
+    try:
+        event = Event.objects.get(id=id)
+        if request.method == "GET":
+            return render(request, 'events_update.html', {"event":event})
+
+        if request.method == "POST":
+            event.name = request.POST["name"]
+            event.artist = request.POST["artist"]
+            event.venue = request.POST["venue"]
+            event.ticket_price = request.POST["ticket_price"]
+            event.description = request.POST["event_description"]
+            event.event_date = request.POST["event_date"]
+            event.event_time_start = request.POST["event_time_start"]
+            event.event_time_end = request.POST["event_time_end"]
+
+            event.save()
+
+            messages.success(request, f'event {event.name} updated successfullly')
+    except Exception as e:
+        messages.error(request, e.args)
+
+    return redirect('list_events')
+
+
+def delete_event(request, id):
+    try:
+        event = Event.objects.get(id=id)
+        events = EventCustomerRef.objects.filter(event_id=id)
+        for ref in events:
+            ref.delete()
+        event.delete()
+
+        event_exists = Event.objects.filter(id=id).exists()
+        if not event_exists:
+            messages.success(request, "event deleted successfully")
+        else:
+            messages.error(request, "error deleting event")
+    except Exception as e:
+        messages.error(request, e.args)
+
+    return redirect('list_events')
 
 def seed_data(request):
     fake = Faker()

@@ -193,12 +193,12 @@
             <section class="card-cont">
                 <svg id="barcode"> </svg>
                 <script type="text/javascript">
-                    JsBarcode("#barcode", "Users name", {
+                    JsBarcode("#barcode", "{{user.first_name}} {{ user.last_name }}", {
                         format: "CODE39",
                         height:25
                     });
                 </script>
-                <h3 class="text-danger">Artists name : {{ event.name }}</h3>
+                <h3 class="text-danger">{{ event.artist }} : {{ event.name }}</h3>
                 <div class="even-date text-info">
                     <i class="fa fa-calendar"></i>
                     <time>
@@ -208,7 +208,7 @@
                 <div class="even-date text-info">
                     <i class="fa fa-clock"></i>
                     <time>
-                        <span>&nbsp; &nbsp;08:55pm to 12:00 am</span>
+                        <span>&nbsp; &nbsp;{{ event.event_time_start }} to {{ event.event_time_end }}</span>
                     </time>
                 </div>
                 <div class="even-info text-info">

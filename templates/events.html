@@ -6,7 +6,14 @@
     <section style="margin-top: 100px">
         <div class="card">
             <div class="card-header">
+                    {% if user.is_authenticated %}
+
                 <a href="{% url 'add_event' %}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                {% else %}
+                        <h3 class="text-danger">Please
+                            <a href="{% url 'login' %}" class="register-link">log in</a>
+                            to create an event</h3>
+                {% endif %}
             </div>
             <div class="card-body">
                 <table class="table table-hover table-dark" id="events-list">
@@ -15,6 +22,8 @@
                     <th>Venue</th>
                     <th>Ticket price</th>
                     <th>Event date</th>
+                    <th>Starts From</th>
+                    <th>Ends At</th>
                     <th>Action</th>
                     </thead>
                     <tbody>
@@ -23,13 +32,15 @@
                             <td class="text-center text-warning"><a class="text-warning" href="{% url 'events_detail' event.id %}?e_id={{ event.id }}" >
                                 {{ event.name }}</a></td>
                             <td class="text-center text-">{{ event.venue }}</td>
-                            <td class="text-center text-">{{ event.ticket_price }}</td>
+                            <td class="text-center text-">Rs. {{ event.ticket_price }}</td>
                             <td class="text-center text-">{{ event.event_date }}</td>
+                            <td class="text-center text-">{{ event.event_time_start }}</td>
+                            <td class="text-center text-">{{ event.event_time_end }}</td>
                             <td class="text-center">
-                                <a href="{% url 'book_events' %}?e_id={{ event.id }}" >
+                                <a href="{% url 'edit_events' event.id %}" >
                                     <i class="fa fa-pen"></i>
                                 </a> |&nbsp;
-                                <a href="{% url 'book_events' %}?e_id={{ event.id }}" >
+                                <a href="{% url 'delete_events' event.id %}" >
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>

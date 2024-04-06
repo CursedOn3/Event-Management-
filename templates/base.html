@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {%block title%}{%endblock title%} | Events Management</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -28,40 +28,49 @@
 </head>
 <body>
 
-    <!-- header seaction starts-->
-    <header class ="header">
-        <img src="{{user_profile.user_img}}" style= 'width:55px ; height:55px ; border-radius:50% ; margin-left: 9rem;'>
-        <a href="{% url 'home' %}" class="logo"><span>Event</span>Managements</a>
-        
-        <nav class="navbar">
-    {% if user.is_authenticated %}
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'services' %}">Service</a>
-        <a href="{% url 'gallery' %}">Gallery</a>
-        <a href="{% url 'contact' %}">Contact</a>
-        <a href="{% url 'profile' %}">Profile</a>
-        <a href="{% url 'list_events' %}">Events</a>
-        <a href="{% url 'list_my_events' %}">My Events</a>
-        <a href="{% url 'logout' %}">logout</a>
+<!-- header seaction starts-->
+<header class ="header">
+    <img src="{{user_profile.user_img}}" style= 'width:55px ; height:55px ; border-radius:50% ; margin-left: 9rem;'>
+    <a href="{% url 'home' %}" class="logo"><span>Event</span>Managements</a>
 
-</div>
-    {% else %}
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'services' %}">Service</a>
-        <a href="{% url 'gallery' %}">Gallery</a>
-        <a href="{% url 'contact' %}">Contact</a>
-        <a href="{% url 'list_events' %}">Events</a>
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-    {% endif %}
-</nav>
-        <div id="menu-bars" class="fas fa-bars"></div>
-    </header>
-    {% include 'messaging.html' %}
-    {% block body %}
-    {% endblock body %}
+    <nav class="navbar">
+        {% if user.is_authenticated %}
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'services' %}">Service</a>
+            <a href="{% url 'gallery' %}">Gallery</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'list_events' %}">Events</a>
+            <a href="{% url 'list_my_events' %}">My Events</a>
+            <a href="{% url 'logout' %}">logout</a>
+
+            </div>
+        {% else %}
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'services' %}">Service</a>
+            <a href="{% url 'gallery' %}">Gallery</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'list_events' %}">Events</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </nav>
+    <div id="menu-bars" class="fas fa-bars"></div>
+</header>
+{% block body %}
+    <div class="card">
+    {{ messages }}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock body %}
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>

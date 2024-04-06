@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="0e95a654-0223-4150-87e7-e20c42040b2c">
+    <data-source source="LOCAL" name="db" uuid="4c387e2f-f96c-4044-97d9-a4afb417405e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:F:\proj(mod)\Event-management-with-Django-main (6)\Event-management-with-Django-main\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:F:\Archive\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
